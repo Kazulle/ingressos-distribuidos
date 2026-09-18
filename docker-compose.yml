@@ -1,0 +1,21 @@
+services:
+  servidor:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ingressos:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/tickets', timeout=2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+      start_period: 3s
+  cliente:
+    build: .
+    depends_on:
+      servidor:
+        condition: service_healthy
+    command: ["python", "client.py", "--url", "http://servidor:8000", "disponibilidade"]
+volumes:
+  ingressos:

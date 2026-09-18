@@ -1,0 +1,8 @@
+.git
+__pycache__
+**/__pycache__
+data
+*.db
+*.db-shm
+*.db-wal
+.venv
